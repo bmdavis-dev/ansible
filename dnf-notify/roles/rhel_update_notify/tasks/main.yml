@@ -1,0 +1,30 @@
+---
+- name: Install dnf-automatic
+  ansible.builtin.package:
+    name: dnf-automatic
+    state: present
+
+- name: Deploy automatic.conf (notify-only)
+  ansible.builtin.copy:
+    src: automatic.conf
+    dest: /etc/dnf/automatic.conf
+    mode: "0644"
+  notify: restart dnf-automatic
+
+- name: Install report script
+  ansible.builtin.copy:
+    src: dnf-report.sh
+    dest: /usr/local/bin/dnf-report.sh
+    mode: "0755"
+
+- name: Enable timers
+  ansible.builtin.systemd:
+    name: dnf-automatic-notifyonly.timer
+    state: started
+    enabled: true
+
+handlers:
+  - name: restart dnf-automatic
+    ansible.builtin.systemd:
+      name: dnf-automatic-notifyonly.timer
+      state: restarted
