@@ -9,4 +9,7 @@ This Ansbile Playbook does the following:
 
 NOTE: You must add a webhook in dnf-report.sh
 
-Run using this command ansible-playbook -i <host>, playbooks/notify.yml -b
+Run using this command 
+```bash
+ansible-playbook -i <host>, playbooks/notify.yml -b
+```
